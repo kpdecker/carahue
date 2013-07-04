@@ -1,0 +1,26 @@
+{
+  "name": "carahue",
+  "version": "0.0.0",
+  "description": "Declarative style diffing tool",
+  "keywords": [
+    "CSS",
+    "continuous-integration",
+    "phantomjs"
+  ],
+  "author": "Kevin Decker <kpdecker@gmail.com> (http://incaseofstairs.com)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kpdecker/carahue.git"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "colors": "~0.6.0-1",
+    "glob": "~3.2.1",
+    "mocha": "~1.12.0",
+    "spooky": "~0.2.2",
+    "underscore": "~1.4.4"
+  }
+}
