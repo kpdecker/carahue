@@ -25,7 +25,19 @@
   },
   "devDependencies": {
     "chai": "~1.7.2",
+    "grunt": "~0.4",
+    "grunt-contrib-jshint": "~0.4",
+    "grunt-mocha-cov": "~0.0",
     "sinon": "~1.7.3",
     "sinon-chai": "~2.4.0"
+  },
+  "scripts": {
+    "blanket": {
+      "pattern": "//^((?!/node_modules/|/test/|/SpookyJS/).)*$/",
+      "data-cover-flags": {
+        "branchTracking": true
+      }
+    },
+    "test": "node_modules/.bin/mocha test/*.js"
   }
 }
