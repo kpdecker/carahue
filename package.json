@@ -22,5 +22,10 @@
     "mocha": "~1.12.0",
     "spooky": "~0.2.2",
     "underscore": "~1.4.4"
+  },
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "sinon": "~1.7.3",
+    "sinon-chai": "~2.4.0"
   }
 }
