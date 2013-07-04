@@ -57,8 +57,6 @@ describe('context', function() {
     should.exist(passed.thenWaitForImages);
 
     should.exist(passed.thenScreenshot);
-    should.exist(passed.thenViewScreenshot);
-    should.exist(passed.thenPageScreenshot);
   });
 
   it('should forward calls to spooky', function() {
