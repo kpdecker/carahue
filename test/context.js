@@ -3,7 +3,6 @@ var context = require('../lib/context');
 describe('context', function() {
   var passed,
       spooky,
-      fn,
 
       $impl;
   beforeEach(function() {
@@ -25,8 +24,7 @@ describe('context', function() {
       }),
       captureSelector: this.spy()
     };
-    fn = this.spy();
-    context(passed, spooky, fn)();
+    context(passed, spooky);
 
     $impl = {
       attr: this.spy(),
@@ -43,9 +41,6 @@ describe('context', function() {
     };
   });
 
-  it('should call wrapped function', function() {
-    fn.should.have.been.calledOnce;
-  });
   it('should augment passed object', function() {
     should.exist(passed.then);
     should.exist(passed.thenClick);
