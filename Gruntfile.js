@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         options: {
           reporter: 'html-cov'
         },
-        src: ['test/*.js']
+        src: ['test/*.js', '!test/integration.js']
       },
       options: {
         require: ['./test/lib/mocha-sinon']
