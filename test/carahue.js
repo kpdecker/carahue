@@ -1,10 +1,21 @@
 var context = require('../lib/context'),
+    EventEmitter = require('events').EventEmitter,
     Mocha = require('mocha'),
     Spooky = require('../lib/spooky');
 
 require('../lib/carahue');
 
 describe('carahue', function() {
+  beforeEach(function() {
+    var spooky = new EventEmitter();
+    spooky.start = function() {};
+    spooky.run = function(callback) {
+      callback.call(spooky);
+    };
+    this.stub(Spooky, 'get', function(callback) {
+      callback(spooky);
+    });
+  });
   afterEach(function() {
     delete require.cache[__dirname + '/artifacts/screenshot.js'];
     delete require.cache[__dirname + '/artifacts/additional-actions.js'];
