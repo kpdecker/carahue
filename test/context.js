@@ -31,7 +31,7 @@ describe('context', function() {
       }),
       captureSelector: this.spy()
     };
-    context(passed, spooky);
+    context.inject(passed, spooky);
 
     $impl = {
       attr: this.spy(),
@@ -62,7 +62,7 @@ describe('context', function() {
   });
   it('should not overwrite if called twice', function() {
     var then = passed.then;
-    context(passed, spooky);
+    context.inject(passed, spooky);
     passed.then.should.equal(then);
   });
 
