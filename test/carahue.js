@@ -69,8 +69,39 @@ describe('carahue', function() {
     });
   });
 
-  it('should wait for all screenshots to quit');
-  it('should quit if all screenshots are complete');
+  it('should wait for all screenshots to quit', function(done) {
+    var self = this;
+    Spooky.get(function(spooky) {
+      var screenshot = self.spy(function() {
+        spooky.emit('carahue.capture');
+      });
+
+      self.stub(context, 'inject', function(context) {
+        context.thenScreenshot = screenshot;
+      });
+
+      var mocha = new Mocha(),
+          count = 0;
+      mocha.reporter(function(runner) {});
+      mocha.files = [__dirname + '/artifacts/additional-actions.js'];
+      mocha.run(function() {
+        spooky.removeListener('carahue.done', onDone);
+
+        screenshot.should.have.been.calledTwice;
+        count.should.equal(3);
+
+        done();
+      });
+
+      function onDone() {
+        count++;
+        process.nextTick(function() {
+          spooky.emit('carahue.capture.complete');
+        });
+      }
+      spooky.on('carahue.done', onDone);
+    });
+  });
 
   it('should support multiple tests in same exec');
 });
