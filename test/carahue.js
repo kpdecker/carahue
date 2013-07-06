@@ -132,5 +132,26 @@ describe('carahue', function() {
     });
   });
 
-  it('should support multiple tests in same exec');
+  it('should support multiple tests in same exec', function(done) {
+    var screenshot = this.spy(function() {});
+
+    this.stub(context, 'inject', function(context) {
+      context.thenScreenshot = screenshot;
+    });
+
+    var mocha = new Mocha();
+    mocha.reporter(function(runner) {});
+    mocha.files = [__dirname + '/artifacts/multiple.js'];
+    mocha.run(function() {
+      screenshot.callCount.should.equal(8);
+
+      screenshot.withArgs('before-page').should.have.been.calledThrice;
+      screenshot.withArgs('before-page2').should.have.been.calledTwice;
+      screenshot.should.have.been.calledWith('screenshot');
+      screenshot.should.have.been.calledWith('screenshot1');
+      screenshot.should.have.been.calledWith('screenshot3');
+
+      done();
+    });
+  });
 });
