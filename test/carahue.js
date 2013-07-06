@@ -40,7 +40,24 @@ describe('carahue', function() {
       done();
     });
   });
-  it('should execute beforePage steps');
+  it('should execute beforePage steps', function(done) {
+    var screenshot = this.spy(function() {});
+
+    this.stub(context, 'inject', function(context) {
+      context.thenScreenshot = screenshot;
+    });
+
+    var mocha = new Mocha();
+    mocha.reporter(function(runner) {});
+    mocha.files = [__dirname + '/artifacts/before-page.js'];
+    mocha.run(function() {
+      screenshot.should.have.been.calledTwice;
+      screenshot.should.have.been.calledWith('before-page');
+      screenshot.should.have.been.calledWith('screenshot');
+
+      done();
+    });
+  });
   it('should execute additional steps', function(done) {
     var screenshot = this.spy(function() {});
 
