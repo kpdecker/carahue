@@ -20,6 +20,7 @@ describe('carahue', function() {
     });
 
     var mocha = new Mocha();
+    mocha.reporter(function() {});
     mocha.files = [__dirname + '/artifacts/screenshot.js'];
     mocha.run(function() {
       screenshot.should.have.been.calledOnce;
