@@ -10,7 +10,13 @@ describe('context', function() {
   beforeEach(function() {
     passed = {
       screencapturePath: 'cap!',
-      failurePath: 'fail!'
+      failurePath: 'fail!',
+
+      test: {
+        fullTitle: function() {
+          return 'full title!';
+        }
+      }
     };
     spooky = {
       on: this.spy(),
@@ -128,7 +134,7 @@ describe('context', function() {
       });
 
       passed.thenScreenshot('foo', 'bar');
-      spooky.emit.should.have.been.calledWith('carahue.capture', 'foo');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'full title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
       fs.createReadStream.should.have.been.calledOnce;
@@ -144,7 +150,7 @@ describe('context', function() {
       });
 
       passed.thenScreenshot('foo', 'bar');
-      spooky.emit.should.have.been.calledWith('carahue.capture', 'foo');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'full title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
       callback({
@@ -159,7 +165,7 @@ describe('context', function() {
       });
 
       passed.thenScreenshot('foo', 'bar');
-      spooky.emit.should.have.been.calledWith('carahue.capture', 'foo');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'full title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
       (function() {
