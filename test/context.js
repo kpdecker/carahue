@@ -1,4 +1,6 @@
-var context = require('../lib/context');
+var context = require('../lib/context'),
+    fs = require('fs'),
+    resemble = require('resemble');
 
 describe('context', function() {
   var passed,
@@ -6,8 +8,13 @@ describe('context', function() {
 
       $impl;
   beforeEach(function() {
-    passed = {};
+    passed = {
+      screencapturePath: 'cap!',
+      failurePath: 'fail!'
+    };
     spooky = {
+      on: this.spy(),
+      emit: this.spy(),
       thenClick: this.spy(),
       then: function(callback) {
         if (callback[1]) {
@@ -53,6 +60,11 @@ describe('context', function() {
 
     should.exist(passed.thenScreenshot);
   });
+  it('should not overwrite if called twice', function() {
+    var then = passed.then;
+    context(passed, spooky);
+    passed.then.should.equal(then);
+  });
 
   it('should forward calls to spooky', function() {
     passed.thenClick('foo', 'bar');
@@ -80,6 +92,25 @@ describe('context', function() {
   });
 
   describe('#thenScreenshot', function() {
+    var callback;
+
+    beforeEach(function() {
+      this.stub(resemble, 'resemble', function() {
+        return {
+          compareTo: function() { return this; },
+          ignoreAntialiasing: function() { return this; },
+          onComplete: function(_callback) {
+            callback = _callback;
+          }
+        };
+      });
+
+      this.stub(fs, 'createReadStream', function() {
+        return { pipe: function() {} };
+      });
+      this.stub(fs, 'createWriteStream');
+    });
+
     it('should call captureSelector', function() {
       passed.thenScreenshot('foo', 'bar');
       spooky.captureSelector.should.have.been.calledOnce;
@@ -89,6 +120,65 @@ describe('context', function() {
       spooky.captureSelector.should.have.been.calledOnce;
       $impl.css.should.have.been.calledWith('visibility', 'hidden');
       $impl.css.should.have.been.calledWith('visibility', '');
+    });
+
+    it('should create missing screenshot', function() {
+      this.stub(fs, 'exists', function(path, callback) {
+        callback(false);
+      });
+
+      passed.thenScreenshot('foo', 'bar');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'foo');
+      spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
+
+      fs.createReadStream.should.have.been.calledOnce;
+      fs.createReadStream.should.have.been.calledWith('baz');
+
+      fs.createWriteStream.should.have.been.calledOnce;
+      fs.createWriteStream.should.have.been.calledWith('cap!/foo.png');
+    });
+
+    it('should ignore matching screenshots', function() {
+      this.stub(fs, 'exists', function(path, callback) {
+        callback(true);
+      });
+
+      passed.thenScreenshot('foo', 'bar');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'foo');
+      spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
+
+      callback({
+        misMatchPercentage: 0
+      });
+      spooky.emit.should.have.been.calledWith('carahue.capture.complete');
+    });
+
+    it('should output failing screenshots', function() {
+      this.stub(fs, 'exists', function(path, callback) {
+        callback(true);
+      });
+
+      passed.thenScreenshot('foo', 'bar');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'foo');
+      spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
+
+      (function() {
+        callback({
+          misMatchPercentage: 1,
+          pngStream: function() {
+            return {
+              pipe: function() {}
+            };
+          }
+        });
+      }).should.throw(/Screenshot "foo" failed./);
+
+      fs.createWriteStream.should.have.been.calledThrice;
+      fs.createWriteStream.should.have.been.calledWith('fail!/foo.fail.png');
+      fs.createWriteStream.should.have.been.calledWith('fail!/foo.expected.png');
+      fs.createWriteStream.should.have.been.calledWith('fail!/foo.diff.png');
+
+      spooky.emit.should.not.have.been.calledWith('carahue.capture.complete');
     });
   });
 });
