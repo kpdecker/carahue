@@ -18,6 +18,7 @@ describe('carahue', function() {
   });
   afterEach(function() {
     delete require.cache[__dirname + '/artifacts/screenshot.js'];
+    delete require.cache[__dirname + '/artifacts/multiple.js'];
     delete require.cache[__dirname + '/artifacts/additional-actions.js'];
   });
   after(function() {
