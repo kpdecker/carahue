@@ -156,9 +156,9 @@ describe('carahue', function() {
 
       screenshot.withArgs('before-page').should.have.been.calledThrice;
       screenshot.withArgs('before-page2').should.have.been.calledTwice;
-      screenshot.should.have.been.calledWith('screenshot');
-      screenshot.should.have.been.calledWith('screenshot1');
-      screenshot.should.have.been.calledWith('screenshot3');
+      screenshot.should.have.been.calledWith('page1');
+      screenshot.should.have.been.calledWith('page2');
+      screenshot.should.have.been.calledWith('page3');
 
       done();
     });
