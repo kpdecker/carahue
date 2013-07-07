@@ -1,7 +1,15 @@
 var context = require('../lib/context'),
     EventEmitter = require('events').EventEmitter,
-    Mocha = require('mocha'),
+    Mocha,
     Spooky = require('../lib/spooky');
+
+// Use the mocha version that is running us to keep in sync with the hack that the impl
+// does to bootstrap oursevles
+process.mainModule.children.forEach(function(child) {
+  if (/mocha[\/\\]index.js/.test(child.filename)) {
+    Mocha = child.exports;
+  }
+});
 
 require('../lib/carahue');
 
