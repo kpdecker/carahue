@@ -33,6 +33,7 @@
     "sinon": "~1.7.3",
     "sinon-chai": "~2.4.0"
   },
+  "main": "./lib/carahue",
   "scripts": {
     "blanket": {
       "pattern": "//^((?!/node_modules/|/test/).)*$/",
