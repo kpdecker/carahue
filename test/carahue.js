@@ -1,6 +1,7 @@
 var context = require('../lib/context'),
     EventEmitter = require('events').EventEmitter,
     Mocha,
+    sinon = require('sinon'),
     Spooky = require('../lib/spooky');
 
 // Use the mocha version that is running us to keep in sync with the hack that the impl
@@ -61,7 +62,7 @@ describe('carahue', function() {
     mocha.files = [__dirname + '/artifacts/before-page.js'];
     mocha.run(function() {
       screenshot.should.have.been.calledTwice;
-      screenshot.should.have.been.calledWith('before-page');
+      screenshot.should.have.been.calledWith('before-page', 'screenshot', sinon.match(/index.html/));
       screenshot.should.have.been.calledWith('');
 
       done();
