@@ -35,7 +35,9 @@ describe('context', function() {
       waitFor: this.spy(function(callback) {
         return callback();
       }),
-      captureSelector: this.spy()
+      captureBase64: this.spy(function() {
+        return 'data';
+      })
     };
     context.inject(passed, spooky);
 
@@ -115,21 +117,17 @@ describe('context', function() {
         return { pipe: function() {} };
       });
       this.stub(fs, 'createWriteStream');
+      this.stub(fs, 'writeFile');
     });
 
-    it('should call captureSelector', function() {
+    it('should call captureBase64', function() {
       passed.thenScreenshot('foo', 'bar');
-      spooky.captureSelector.should.have.been.calledOnce;
-      spooky.captureSelector.should.have.been.calledWith('full-title!-foo.png');
-    });
-    it('should handle no title case', function() {
-      passed.thenScreenshot(undefined, 'bar');
-      spooky.captureSelector.should.have.been.calledOnce;
-      spooky.captureSelector.should.have.been.calledWith('full-title!.png');
+      spooky.captureBase64.should.have.been.calledOnce;
+      spooky.captureBase64.should.have.been.calledWith('PNG', 'bar');
     });
     it('should hide and show ignored elements', function() {
       passed.thenScreenshot('foo', 'bar', 'baz');
-      spooky.captureSelector.should.have.been.calledOnce;
+      spooky.captureBase64.should.have.been.calledOnce;
       $impl.css.should.have.been.calledWith('visibility', 'hidden');
       $impl.css.should.have.been.calledWith('visibility', '');
     });
@@ -143,11 +141,8 @@ describe('context', function() {
       spooky.emit.should.have.been.calledWith('carahue.capture', 'full-title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
-      fs.createReadStream.should.have.been.calledOnce;
-      fs.createReadStream.should.have.been.calledWith('baz');
-
-      fs.createWriteStream.should.have.been.calledOnce;
-      fs.createWriteStream.should.have.been.calledWith('cap!/foo.png');
+      fs.writeFile.should.have.been.calledOnce;
+      fs.writeFile.should.have.been.calledWith('cap!/foo.png');
     });
 
     it('should ignore matching screenshots', function() {
@@ -185,10 +180,12 @@ describe('context', function() {
         });
       }).should.throw(/Screenshot "foo" failed./);
 
-      fs.createWriteStream.should.have.been.calledThrice;
-      fs.createWriteStream.should.have.been.calledWith('fail!/foo.fail.png');
+      fs.createWriteStream.should.have.been.calledTwice;
       fs.createWriteStream.should.have.been.calledWith('fail!/foo.expected.png');
       fs.createWriteStream.should.have.been.calledWith('fail!/foo.diff.png');
+
+      fs.writeFile.should.have.been.calledOnce;
+      fs.writeFile.should.have.been.calledWith('fail!/foo.fail.png');
 
       spooky.emit.should.not.have.been.calledWith('carahue.capture.complete');
     });

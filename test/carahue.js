@@ -147,12 +147,16 @@ describe('carahue', function() {
         spooky.removeListener('carahue.done', onDone);
 
         screenshot.should.have.been.calledTwice;
-        count.should.equal(3);
+        count.should.equal(2);
 
         done();
       });
 
       function onDone() {
+        if (count >= 2) {
+          return;
+        }
+
         count++;
         process.nextTick(function() {
           spooky.emit('carahue.capture.complete');
