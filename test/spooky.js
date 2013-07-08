@@ -54,6 +54,7 @@ describe('spooky wrapper', function() {
 
   it('should handle error events', function() {
     var callback;
+    this.stub(process, 'nextTick');
     this.stub(SpookyLib, 'create', function(options, _callback) {
       callback = _callback;
       return {
@@ -69,9 +70,33 @@ describe('spooky wrapper', function() {
     Spooky.get();
     callback();
 
+    callback('failed');
     (function() {
-      callback('failed');
+      process.nextTick.args[0][0]();
     }).should.throw(/failed/);
+  });
+  it('should handle error events', function() {
+    var callback;
+    this.stub(process, 'nextTick');
+    this.stub(SpookyLib, 'create', function(options, _callback) {
+      callback = _callback;
+      return {
+        on: function(event, _callback) {
+          if (event === 'die') {
+            callback = _callback;
+          }
+        },
+        destroy: function() {}
+      };
+    });
+
+    Spooky.get();
+    callback();
+
+    callback('die');
+    (function() {
+      process.nextTick.args[0][0]();
+    }).should.throw(/die/);
   });
 
   it('should handle log events', function() {
