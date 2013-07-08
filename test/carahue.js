@@ -15,9 +15,10 @@ process.mainModule.children.forEach(function(child) {
 require('../lib/carahue');
 
 describe('carahue', function() {
+  var spooky;
   beforeEach(function() {
-    var spooky = new EventEmitter();
-    spooky.start = function() {};
+    spooky = new EventEmitter();
+    spooky.start = this.spy();
     spooky.run = function(callback) {
       callback.call(spooky);
     };
@@ -44,6 +45,25 @@ describe('carahue', function() {
     mocha.reporter(function() {});
     mocha.files = [__dirname + '/artifacts/screenshot.js'];
     mocha.run(function() {
+      screenshot.should.have.been.calledOnce;
+      screenshot.should.have.been.calledWith('');
+
+      done();
+    });
+  });
+
+  it('should handle route prefix', function(done) {
+    var screenshot = this.spy();
+    this.stub(context, 'inject', function(context) {
+      context.thenScreenshot = screenshot;
+    });
+
+    var mocha = new Mocha();
+    mocha.reporter(function() {});
+    mocha.files = [__dirname + '/artifacts/route-prefix.js'];
+    mocha.run(function() {
+      spooky.start.should.have.been.calledWith(__dirname + '/artifacts/index.html');
+
       screenshot.should.have.been.calledOnce;
       screenshot.should.have.been.calledWith('');
 

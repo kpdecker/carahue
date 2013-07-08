@@ -51,3 +51,7 @@ Supported configuration values are:
 - `failurePath` : Path to output comparison images from failed tests to.
 
   Defaults to `env.FAILURE_PATH` or "failure"
+
+- `routePrefix` : Prefix to apply to non-qualified routes.
+
+  Defaults to empty.
