@@ -14,6 +14,7 @@ describe('spooky wrapper', function() {
   it('should only call create once', function() {
     this.stub(SpookyLib, 'create', function() {
       return {
+        removeAllListeners: function() {},
         destroy: function() {}
       };
     });
@@ -30,6 +31,7 @@ describe('spooky wrapper', function() {
       callback = _callback;
       return {
         on: function() {},
+        removeAllListeners: function() {},
         destroy: function() {}
       };
     });
@@ -63,6 +65,7 @@ describe('spooky wrapper', function() {
             callback = _callback;
           }
         },
+        removeAllListeners: function() {},
         destroy: function() {}
       };
     });
@@ -86,6 +89,7 @@ describe('spooky wrapper', function() {
             callback = _callback;
           }
         },
+        removeAllListeners: function() {},
         destroy: function() {}
       };
     });
@@ -109,6 +113,7 @@ describe('spooky wrapper', function() {
             callback = _callback;
           }
         },
+        removeAllListeners: function() {},
         destroy: function() {}
       };
     });
