@@ -55,3 +55,17 @@ Supported configuration values are:
 - `routePrefix` : Prefix to apply to non-qualified routes.
 
   Defaults to empty.
+
+## Extending Context
+
+The execution context may be extended using the `carahue.context.extend(object)` method.
+
+```
+carahue.context.extend({
+  thenViewScreenshot: function(name) {
+    return this.thenScreenshot(name, '[data-layout-cid]');
+  }
+});
+```
+
+Any fields exposed on the `object` parameter will be applied to future contexts.

@@ -193,4 +193,14 @@ describe('context', function() {
       spooky.emit.should.not.have.been.calledWith('carahue.capture.complete');
     });
   });
+
+  it('should extend context', function() {
+    var extended = {};
+    context.extend({
+      'extended!': function() {
+      }
+    });
+    context.inject(extended, spooky);
+    should.exist(extended['extended!']);
+  });
 });
