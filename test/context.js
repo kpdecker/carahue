@@ -29,8 +29,8 @@ describe('context', function() {
 
         callback.call(spooky);
       },
-      thenEvaluate: function(callback, arg1, arg2) {
-        callback(arg1, arg2);
+      thenEvaluate: function(callback, arg1) {
+        callback(arg1.query, arg1.check);
       },
       waitFor: this.spy(function(callback) {
         return callback();
