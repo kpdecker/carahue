@@ -120,6 +120,12 @@ describe('context', function() {
     it('should call captureSelector', function() {
       passed.thenScreenshot('foo', 'bar');
       spooky.captureSelector.should.have.been.calledOnce;
+      spooky.captureSelector.should.have.been.calledWith('full-title!-foo.png');
+    });
+    it('should handle no title case', function() {
+      passed.thenScreenshot(undefined, 'bar');
+      spooky.captureSelector.should.have.been.calledOnce;
+      spooky.captureSelector.should.have.been.calledWith('full-title!.png');
     });
     it('should hide and show ignored elements', function() {
       passed.thenScreenshot('foo', 'bar', 'baz');
