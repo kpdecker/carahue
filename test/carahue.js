@@ -44,7 +44,7 @@ describe('carahue', function() {
     mocha.files = [__dirname + '/artifacts/screenshot.js'];
     mocha.run(function() {
       screenshot.should.have.been.calledOnce;
-      screenshot.should.have.been.calledWith('screenshot');
+      screenshot.should.have.been.calledWith('');
 
       done();
     });
@@ -62,7 +62,7 @@ describe('carahue', function() {
     mocha.run(function() {
       screenshot.should.have.been.calledTwice;
       screenshot.should.have.been.calledWith('before-page');
-      screenshot.should.have.been.calledWith('screenshot');
+      screenshot.should.have.been.calledWith('');
 
       done();
     });
@@ -79,7 +79,7 @@ describe('carahue', function() {
     mocha.files = [__dirname + '/artifacts/additional-actions.js'];
     mocha.run(function() {
       screenshot.should.have.been.calledTwice;
-      screenshot.should.have.been.calledWith('screenshot');
+      screenshot.should.have.been.calledWith('');
       screenshot.should.have.been.calledWith('foo', 'bar');
 
       done();
@@ -156,9 +156,7 @@ describe('carahue', function() {
 
       screenshot.withArgs('before-page').should.have.been.calledThrice;
       screenshot.withArgs('before-page2').should.have.been.calledTwice;
-      screenshot.should.have.been.calledWith('page1');
-      screenshot.should.have.been.calledWith('page2');
-      screenshot.should.have.been.calledWith('page3');
+      screenshot.withArgs('').should.have.been.calledThrice;
 
       done();
     });
