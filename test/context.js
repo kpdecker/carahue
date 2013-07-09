@@ -1,4 +1,5 @@
-var context = require('../lib/context'),
+var async = require('async'),
+    context = require('../lib/context'),
     fs = require('fs'),
     resemble = require('resemble');
 
@@ -178,6 +179,9 @@ describe('context', function() {
       this.stub(fs, 'exists', function(path, callback) {
         callback(true);
       });
+      this.stub(fs, 'readFile', function(path, callback) {
+        callback(undefined, 'foo');
+      });
 
       passed.thenScreenshot('foo', 'bar');
       spooky.emit.should.have.been.calledWith('carahue.capture', 'full-title!-foo');
@@ -193,6 +197,15 @@ describe('context', function() {
       this.stub(fs, 'exists', function(path, callback) {
         callback(true);
       });
+      this.stub(fs, 'readFile', function(path, callback) {
+        callback(undefined, 'foo');
+      });
+      this.stub(async, 'parallel', function(steps, callback) {
+        steps.forEach(function(step) {
+          step();
+        });
+        callback();
+      });
 
       passed.thenScreenshot('foo', 'bar');
       spooky.emit.should.have.been.calledWith('carahue.capture', 'full-title!-foo');
@@ -201,19 +214,15 @@ describe('context', function() {
       (function() {
         callback({
           misMatchPercentage: 1,
-          pngStream: function() {
-            return {
-              pipe: function() {}
-            };
+          getImageDataUrl: function() {
+            return 'foo';
           }
         });
       }).should.throw(/Screenshot "foo" failed./);
 
-      fs.createWriteStream.should.have.been.calledTwice;
-      fs.createWriteStream.should.have.been.calledWith('fail!/foo.expected.png');
-      fs.createWriteStream.should.have.been.calledWith('fail!/foo.diff.png');
-
-      fs.writeFile.should.have.been.calledOnce;
+      fs.writeFile.should.have.been.calledThrice;
+      fs.writeFile.should.have.been.calledWith('fail!/foo.expected.png');
+      fs.writeFile.should.have.been.calledWith('fail!/foo.diff.png');
       fs.writeFile.should.have.been.calledWith('fail!/foo.fail.png');
 
       spooky.emit.should.not.have.been.calledWith('carahue.capture.complete');

@@ -22,7 +22,8 @@
     "mocha": "~1.12.0",
     "resemble": "~1.0.1",
     "spooky": "~0.2.3",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "wrench": "~1.5.1"
   },
   "devDependencies": {
     "chai": "~1.7.2",
