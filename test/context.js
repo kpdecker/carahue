@@ -218,6 +218,14 @@ describe('context', function() {
 
       spooky.emit.should.not.have.been.calledWith('carahue.capture.complete');
     });
+
+    it('should error on capture failure', function() {
+      passed.thenScreenshot('foo', 'bar');
+
+      (function() {
+        spooky.on.withArgs('carahue.capture').args[0][1]('foo');
+      }).should.throw(/Failed to capture image: "foo"/);
+    });
   });
 
   it('should extend context', function() {
