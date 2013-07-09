@@ -14,9 +14,10 @@ describe('context', function() {
       failurePath: 'fail!',
 
       test: {
-        fullTitle: function() {
-          return 'full title!';
-        }
+        parent: {
+          title: 'parent!'
+        },
+        title: 'title!'
       }
     };
     spooky = {
@@ -168,7 +169,7 @@ describe('context', function() {
       });
 
       passed.thenScreenshot('foo', 'bar');
-      spooky.emit.should.have.been.calledWith('carahue.capture', 'full-title!-foo');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'parent!/title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
       fs.writeFile.should.have.been.calledOnce;
@@ -184,7 +185,7 @@ describe('context', function() {
       });
 
       passed.thenScreenshot('foo', 'bar');
-      spooky.emit.should.have.been.calledWith('carahue.capture', 'full-title!-foo');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'parent!/title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
       callback({
@@ -208,7 +209,7 @@ describe('context', function() {
       });
 
       passed.thenScreenshot('foo', 'bar');
-      spooky.emit.should.have.been.calledWith('carahue.capture', 'full-title!-foo');
+      spooky.emit.should.have.been.calledWith('carahue.capture', 'parent!/title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
       (function() {
