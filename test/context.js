@@ -32,8 +32,11 @@ describe('context', function() {
       thenEvaluate: function(callback, arg1) {
         callback(arg1.query, arg1.check);
       },
-      waitFor: this.spy(function(callback) {
+      evaluate: function(callback) {
         return callback();
+      },
+      waitFor: this.spy(function(callback) {
+        return callback.call(this);
       }),
       captureBase64: this.spy(function() {
         return 'data';
@@ -91,11 +94,37 @@ describe('context', function() {
   });
 
   describe('#thenWaitForImages', function() {
-    it('should wait for images', function() {
+    it('should handle no images', function() {
       passed.thenWaitForImages();
       spooky.waitFor.should.have.been.calledOnce;
       spooky.waitFor.should.have.returned(true);
       global.document.querySelectorAll.should.have.been.calledWith('img');
+    });
+    it('should handle no images', function() {
+      var imgs = [{complete: false}];
+      global.document.querySelectorAll = this.spy(function() {
+        return imgs;
+      });
+
+      passed.thenWaitForImages();
+      spooky.waitFor.should.have.been.calledOnce;
+      spooky.waitFor.should.have.returned(false);
+      global.document.querySelectorAll.should.have.been.calledWith('img');
+
+      spooky.waitFor.reset();
+      imgs[0].complete = true;
+      imgs.push({complete: false});
+
+      passed.thenWaitForImages();
+      spooky.waitFor.should.have.been.calledOnce;
+      spooky.waitFor.should.have.returned(false);
+
+      spooky.waitFor.reset();
+      imgs[1].complete = true;
+
+      passed.thenWaitForImages();
+      spooky.waitFor.should.have.been.calledOnce;
+      spooky.waitFor.should.have.returned(true);
     });
   });
 
