@@ -56,6 +56,8 @@ Supported configuration values are:
 
   Defaults to empty.
 
+- `globalIgnore` : Selector of elements that are always to be ignored when taking screenshots.
+
 ## Extending Context
 
 The execution context may be extended using the `carahue.context.extend(object)` method.
