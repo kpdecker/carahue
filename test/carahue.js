@@ -186,4 +186,23 @@ describe('carahue', function() {
       done();
     });
   });
+
+  it('should support options', function(done) {
+    var screenshot = this.spy(function() {});
+
+    this.stub(context, 'inject', function(context) {
+      context.thenScreenshot = screenshot;
+    });
+
+    var mocha = new Mocha();
+    mocha.reporter(function(runner) {});
+    mocha.files = [__dirname + '/artifacts/options.js'];
+    mocha.run(function() {
+      screenshot.should.have.been.calledTwice;
+      screenshot.should.have.been.calledWith('', undefined, 'ignore');
+      screenshot.should.have.been.calledWith('', undefined, 'ignore2');
+
+      done();
+    });
+  });
 });
