@@ -71,3 +71,10 @@ carahue.context.extend({
 ```
 
 Any fields exposed on the `object` parameter will be applied to future contexts.
+
+## Testing
+
+```
+  grunt test
+```
+
