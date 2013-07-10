@@ -153,12 +153,12 @@ describe('context', function() {
 
     it('should call captureBase64', function() {
       passed.thenScreenshot('foo', 'bar');
-      spooky.captureBase64.should.have.been.calledOnce;
+      spooky.captureBase64.should.have.been.calledTwice;
       spooky.captureBase64.should.have.been.calledWith('PNG', 'bar');
     });
     it('should hide and show ignored elements', function() {
       passed.thenScreenshot('foo', 'bar', 'baz');
-      spooky.captureBase64.should.have.been.calledOnce;
+      spooky.captureBase64.should.have.been.calledTwice;
       $impl.css.should.have.been.calledWith('visibility', 'hidden');
       $impl.css.should.have.been.calledWith('visibility', '');
     });
@@ -230,6 +230,8 @@ describe('context', function() {
     });
 
     it('should error on capture failure', function() {
+      this.stub(process, 'nextTick', function(callback) { callback(); });
+
       passed.thenScreenshot('foo', 'bar');
 
       (function() {
