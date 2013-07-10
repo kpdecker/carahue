@@ -102,32 +102,4 @@ describe('spooky wrapper', function() {
       process.nextTick.args[0][0]();
     }).should.throw(/die/);
   });
-
-  it('should handle log events', function() {
-    var callback;
-    this.stub(SpookyLib, 'create', function(options, _callback) {
-      callback = _callback;
-      return {
-        on: function(event, _callback) {
-          if (event === 'log') {
-            callback = _callback;
-          }
-        },
-        removeAllListeners: function() {},
-        destroy: function() {}
-      };
-    });
-    this.stub(console, 'log');
-
-    Spooky.get();
-    callback();
-
-    var message = 'message!';
-    message.space = 'remote';
-    callback({
-      space: 'remote',
-      message: 'message!'
-    });
-    console.log.should.have.been.calledWith('message!');
-  });
 });
