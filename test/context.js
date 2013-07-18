@@ -1,7 +1,8 @@
 var async = require('async'),
     context = require('../lib/context'),
     fs = require('fs'),
-    resemble = require('resemble');
+    resemble = require('resemble'),
+    sinon = require('sinon');
 
 describe('context', function() {
   var passed,
@@ -212,21 +213,19 @@ describe('context', function() {
       spooky.emit.should.have.been.calledWith('carahue.capture', 'parent!/title!-foo');
       spooky.on.withArgs('carahue.capture').args[0][1]('foo', 'baz');
 
-      (function() {
-        callback({
-          misMatchPercentage: 1,
-          getImageDataUrl: function() {
-            return 'foo';
-          }
-        });
-      }).should.throw(/Screenshot "foo" failed./);
+      callback({
+        misMatchPercentage: 1,
+        getImageDataUrl: function() {
+          return 'foo';
+        }
+      });
 
       fs.writeFile.should.have.been.calledThrice;
       fs.writeFile.should.have.been.calledWith('fail!/foo.expected.png');
       fs.writeFile.should.have.been.calledWith('fail!/foo.diff.png');
       fs.writeFile.should.have.been.calledWith('fail!/foo.fail.png');
 
-      spooky.emit.should.not.have.been.calledWith('carahue.capture.complete');
+      spooky.emit.should.not.have.been.calledWith('carahue.capture.complete', sinon.match(/Screenshot "parent!\/title!-foo" failed/));
     });
 
     it('should error on capture failure', function() {
