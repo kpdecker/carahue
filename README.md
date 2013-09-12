@@ -131,7 +131,52 @@ Supported configuration values are:
 
 - `globalIgnore` : Selector of elements that are always to be ignored when taking screenshots.
 
+## Troubleshooting / Best Practices
 
+## Mocking
+
+The image comparison is fairly intollerant of changes to the output, by design. Generally to have successful tests over time it's advisable to mock as much data as possible.
+
+## Screenshot Images
+
+If using git for version control for the project it's advisable to not include screenshot images for the tests in a location outside of the immediate github repository as this can create a lot of overhead as the tests change over time. Projects such as [git-media][] may help resolve this issue.
+
+## Logging
+
+The Casper runtime by default generates a significant amount of logging but the majority of this is not output unless the log and verbosity levels are set appropriately:
+
+```javascript
+carahue.config.extend({
+  casper: {
+    logLevel: 'debug',
+    verbose: true
+  }
+});
+```
+
+When set as above this will enable any casper specific logging instructions. `console.log` statemements run by the page itself will log regardless of the values set here.
+
+Often times timeout or missing selector errors are seen due to unexpected state of the page when the test is run. This snippet may be used as a base to log the page's HTML struture if errors are seen.
+
+```javascript
+beforePage(function() {
+  this
+    .thenEvaluate(function() {
+      console.log('This always logs ' + $('.foo').html());
+    })
+    .then(function() {
+      // This logs if casper flags are set
+      this.echo('test');
+      this.debugHTML();
+    });
+});
+```
+
+## Phantom Wrappers
+
+Spooky utilizes a stdio-based IPC layer that relies on the Casper instance having access to both stdout and stdin.
+
+Occasionally packages will attempt to override the `phantomjs` executable on the path and not implement forwarding for both streams. When this occurs generally the carahue tests will all hang. If this behavior is seen then verify that the `phantomjs` process on the path is the cannonical binary.
 
 ## Testing
 
@@ -146,3 +191,4 @@ Carahue's internal tests may be run via
 [node-resemble]: https://github.com/kpdecker/node-resemble
 [Spooky documentation]: https://github.com/WaterfallEngineering/SpookyJS/wiki/Introduction
 [Casper documentation]: http://docs.casperjs.org/en/latest/modules/index.html
+[git-media]: https://github.com/schacon/git-media
