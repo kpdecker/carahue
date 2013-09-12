@@ -55,7 +55,7 @@ Additionally the following Spooky methods are exposed on the context:
 - `thenOpen`
 - `thenOpenAndEvaluate`
 
-Discussion of these methods and the call structures can be found in the [Spooky documentation][].
+Discussion of these methods and the call structures can be found in the [Spooky documentation][] and the [Casper documentation][].
 
 ### Extending Context
 
@@ -143,3 +143,4 @@ Carahue's internal tests may be run via
 [SpookyJS]: https://github.com/WaterfallEngineering/SpookyJS
 [node-resemble]: https://github.com/kpdecker/node-resemble
 [Spooky documentation]: https://github.com/WaterfallEngineering/SpookyJS/wiki/Introduction
+[Casper documentation]: http://docs.casperjs.org/en/latest/modules/index.html
