@@ -91,7 +91,6 @@ Supported configuration values are:
 - `child` : PhantomJS runtime options.
 
   Defaults to
-
 ```javascript
     {
       'ignore-ssl-errors': 'yes',
@@ -104,7 +103,6 @@ Supported configuration values are:
 - `casper` : Casper runtime options
 
   Defaults to
-
 ```javascript
     {
       'pageSettings': {
