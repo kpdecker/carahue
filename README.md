@@ -1,10 +1,22 @@
 # Carahue
 
+Carahue integrates [Mocha][], [SpookyJS][], and [node-resemble][] for automated layout and render testing of web-based projects.
+
+```javascript
+describe('checkout', function() {
+  page('signin', 'signin', function() {
+    this
+      .thenClick('.continue')
+      .thenScreenshot('errors', '.info-header');
+  });
+});
+```
+
 ## Configuration
 
 Configuration may be updated via the `carahue.config.extend(object)` method, which will augment the config with the passed object value.
 
-```
+```javascript
 carahue.config.extend({
   casper: {
     viewportSize: {
@@ -20,7 +32,8 @@ Supported configuration values are:
 - `child` : PhantomJS runtime options.
 
   Defaults to
-```
+
+```javascript
     {
       'ignore-ssl-errors': 'yes',
       'web-security': 'false'
@@ -32,7 +45,8 @@ Supported configuration values are:
 - `casper` : Casper runtime options
 
   Defaults to
-```
+
+```javascript
     {
       'pageSettings': {
         'userAgent': env.USER_AGENT
@@ -74,7 +88,12 @@ Any fields exposed on the `object` parameter will be applied to future contexts.
 
 ## Testing
 
-```
+Carahue's internal tests may be run via
+
+```sh
   grunt test
 ```
 
+[Mocha] http://visionmedia.github.io/mocha/
+[SpookyJS] https://github.com/WaterfallEngineering/SpookyJS
+[node-resemble] https://github.com/kpdecker/node-resemble
