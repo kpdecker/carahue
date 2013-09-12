@@ -94,6 +94,6 @@ Carahue's internal tests may be run via
   grunt test
 ```
 
-[Mocha] http://visionmedia.github.io/mocha/
-[SpookyJS] https://github.com/WaterfallEngineering/SpookyJS
-[node-resemble] https://github.com/kpdecker/node-resemble
+[Mocha]: http://visionmedia.github.io/mocha/
+[SpookyJS]: https://github.com/WaterfallEngineering/SpookyJS
+[node-resemble]: https://github.com/kpdecker/node-resemble
