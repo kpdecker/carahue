@@ -135,7 +135,7 @@ Supported configuration values are:
 
 ## Mocking
 
-The image comparison is fairly intollerant of changes to the output, by design. Generally to have successful tests over time it's advisable to mock as much data as possible.
+The image comparison is fairly intollerant of changes to the output, by design. Where possible data should be mocked with static test data to reduce the number of changes due to content. When this is not possible, sections of consistently changing data should be ignored in the screenshot output to prevent false positive test failures.
 
 ## Screenshot Images
 
