@@ -12,6 +12,8 @@ describe('checkout', function() {
 });
 ```
 
+See [example](https://github.com/kpdecker/carahue/tree/master/example) for complete examples.
+
 ## BDD
 
 Carahue extends the Mocha BDD API with the `page` and `beforePage` helpers. These may be used in conjuntion with normal Mocha BDD directives but the Carahue context is only available within these methods.
