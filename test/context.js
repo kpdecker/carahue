@@ -41,6 +41,9 @@ describe('context', function() {
       waitFor: this.spy(function(callback) {
         return callback.call(this);
       }),
+      getElementBounds: function() {
+        return {width: 1, height: 1};
+      },
       captureBase64: this.spy(function() {
         return 'data';
       })
