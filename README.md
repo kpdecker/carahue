@@ -192,3 +192,7 @@ Carahue's internal tests may be run via
 [Spooky documentation]: https://github.com/WaterfallEngineering/SpookyJS/wiki/Introduction
 [Casper documentation]: http://docs.casperjs.org/en/latest/modules/index.html
 [git-media]: https://github.com/schacon/git-media
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kpdecker/carahue/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
